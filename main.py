@@ -135,31 +135,30 @@ def calculate_control_signal():
 
 class PID:
     def __init__(self, kp, ki, kd):
-        self.kp = kp  # Gain for proportional control
-        self.ki = ki  # Gain for integral control
-        self.kd = kd  # Gain for derivative control
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
 
-        self.cte_previous = 0  # Previous cross track error
-        self.integral = 0      # Integral of CTE
+        self.cte_previous = 0
+        self.integral = 0
 
     def update(self, cte):
-        # Calculate the derivative of the CTE
-        derivative = cte - self.cte_previous
+        sampling_time = 0.005
+        inv_sampling_time = 1 / sampling_time
 
-        # Update integral of CTE
-        self.integral += cte
+        derivative = (cte - self.cte_previous) * inv_sampling_time
+        self.integral += cte * sampling_time
 
-        # Calculate steering angle
-        steering_angle = int(-(
-            self.kp * cte +                  # Proportional term
-            self.ki * self.integral +        # Integral term
-            self.kd * derivative             # Derivative term
+        steering_angle = int((
+            self.kp * cte +
+            self.ki * self.integrale +
+            self.kd * derivative
         ))
 
-        # Update previous CTE and time
         self.cte_previous = cte
+        steering = steering_angle + 90
 
-        return steering_angle
+        return steering_angle, steering
 
 def main():
     intialTracbarVals = [55, 206, 19, 324]
@@ -176,8 +175,7 @@ def main():
         # Create a PID controller object
         pid_controller = PID(kp, ki, kd)
         # Example usage of the PID controller
-        cte = float(center_diff * 0.
-        1)
+        cte = float(center_diff * 0.01)
         steering_angle = pid_controller.update(cte)
         print(f"Steering Angle: {steering_angle}")
         cv2.putText(frame, f"Steering Angle: {steering_angle}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
