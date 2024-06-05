@@ -4,8 +4,8 @@
 // Define pin numbers
 const int motorPin = 6;  // Motor control pin D6
 const int servoPin = 5;  // Servo control pin D5
-int speedTurn = 120;
-int speedForward = 150; //0-255
+int speedTurn = 200;
+int speedForward = 230; //0-255
 
 Servo myServo;           // Create servo object
 
