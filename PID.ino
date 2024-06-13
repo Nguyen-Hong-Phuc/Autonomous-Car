@@ -40,7 +40,7 @@ void loop() {
     myServo.write(servoAngle);
 
     if (servoAngle > 90 + 10 || servoAngle < 90 - 10) {  // More than +/- 10 degrees from center
-      analogWrite(motorPin, speedTurn);  // Slower speed for sharper turns
+      analogWrite(motorPin, speedForward);  // Slower speed for sharper turns
     } else {
       analogWrite(motorPin, speedTurn);  // Normal speed for slight or no turn
     }
